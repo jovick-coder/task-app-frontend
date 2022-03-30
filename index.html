@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="./assets/css/fontawesome-all.min.css">
+	<link rel="stylesheet" href="assets/css/style.css">
+	<title>Dashboard</title>
+</head>
+
+<body>
+	<nav class="d-flex justify-content-between bg-primary text-white">
+		<div class="my-auto px-2">Task Recorder</div>
+		<!-- <div class="d-flex"><button class="btn btn-danger logout">Logout</button></div> -->
+	</nav>
+	<div class="d-flex align-items-start nav-div">
+		<div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+			<!-- login btn-->
+			<button class="nav-link active text-start" id="v-pills-login-tab" data-bs-toggle="pill"
+				data-bs-target="#v-pills-login" type="button" role="tab" aria-controls="v-pills-login" aria-selected="true">
+				Login
+			</button>
+			<!-- Register btn-->
+			<button class="nav-link d-inline-flex justify-content-between" id="v-pills-Register-tab" data-bs-toggle="pill"
+				data-bs-target="#v-pills-Register" type="button" role="tab" aria-controls="v-pills-Register"
+				aria-selected="false">
+				Register <span class="badge bg-secondary my-auto Register-count"></span>
+			</button>
+		</div>
+
+		<!--  main div -->
+		<div class="tab-content" id="v-pills-tabContent">
+			<!-- login tab -->
+			<div class="tab-pane fade show active" id="v-pills-login" role="tabpanel" aria-labelledby="v-pills-login-tab">
+				<!-- login form -->
+				<form id="login-form">
+					<div class="message"></div>
+					<div class="mb-3">
+						<label for="task" class="form-label">Email</label>
+						<input type="email" class="form-control" id="login-email">
+					</div>
+					<div class="mb-3">
+						<label for="end-date" class="form-label">Password</label>
+						<input type="password" class="form-control" id="login-password">
+					</div>
+
+					<button type="submit" class="btn btn-primary w-100">Submit</button>
+				</form>
+				<!-- login form end -->
+			</div>
+			<!-- login tab end -->
+			<!-- Register tab -->
+			<div class="tab-pane fade" id="v-pills-Register" role="tabpanel" aria-labelledby="v-pills-Register-tab">
+				<form id="register-form">
+					<div class="message"></div>
+					<div class="mb-3">
+						<label for="task" class="form-label">Full Name</label>
+						<input type="text" class="form-control" id="register-name">
+					</div>
+					<div class="mb-3">
+						<label for="task" class="form-label">Email</label>
+						<input type="email" class="form-control" id="register-email">
+					</div>
+					<div class="mb-3">
+						<label for="end-date" class="form-label">Password</label>
+						<input type="password" class="form-control" id="register-password">
+					</div>
+
+					<button type="submit" class="btn btn-primary w-100">Submit</button>
+				</form>
+			</div>
+			<!--Register tab end -->
+
+		</div>
+	</div>
+
+
+	<script>
+		const url = 'http://localhost:3000/api/auth'
+		const loginForm = document.querySelector('#login-form')
+		const registerForm = document.querySelector('#register-form')
+		const message = document.querySelectorAll('.message')
+
+
+		loginForm.addEventListener('submit', e => {
+			e.preventDefault()
+			const formElement = e.target
+			// console.dir(e.target);
+			if (formElement[0].value === '') {
+				message[0].innerHTML = ` <div class='alert alert-danger text-center'>Email is required to login</div>`
+				return
+			}
+			message[0].innerHTML = ``
+			if (formElement[1].value === '') {
+				message[0].innerHTML = ` <div class='alert alert-danger text-center'>Password is required to login</div>`
+				return
+			}
+			message[0].innerHTML = ``
+
+			formElement[2].innerHTML = 'Authenticating ... '
+			formElement[2].disabled = true
+
+			const data = {
+				email: formElement[0].value,
+				password: formElement[1].value
+			}
+			login(data, formElement)
+
+		})
+
+		async function login(data, formElement) {
+			// Default options are marked with *
+			const response = await fetch(`${url}/login`, {
+				method: 'POST', // *GET, POST, PUT, DELETE, etc.
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data) // body data type must match "Content-Type" header
+			});
+			// return
+			const responseJson = await response.json(); // parses JSON response into native JavaScript objects
+			console.log(responseJson);
+			if (responseJson.ok !== true) {
+
+				message[0].innerHTML = ` <div class='alert alert-danger text-center'>${responseJson.error
+					}</div >`
+				formElement[2].innerHTML = 'Login'
+				formElement[2].disabled = false
+				return
+			}
+			message[0].innerHTML = ` <div class='alert alert-success text-center'>Welcome Back User</div >`
+
+			localStorage.setItem('taskToken', responseJson.token)
+			location.replace('dashboard.html')
+		}
+
+
+		// register
+
+		registerForm.addEventListener('submit', e => {
+			e.preventDefault()
+			const formElement = e.target
+			// console.dir(e.target);
+			if (formElement[0].value === '') {
+				message[1].innerHTML = ` <div class='alert alert-danger text-center'>Name is required to register</div>`
+				return
+			}
+			message[1].innerHTML = ``
+			if (formElement[1].value === '') {
+				message[1].innerHTML = ` <div class='alert alert-danger text-center'>Email is required to register</div>`
+				return
+			}
+			message[1].innerHTML = ``
+			// message[0].innerHTML = ``
+			if (formElement[2].value === '') {
+				message[1].innerHTML = ` <div class='alert alert-danger text-center'>Password is required to register</div>`
+				return
+			}
+			message[1].innerHTML = ``
+			formElement[3].innerHTML = 'Registering... '
+			formElement[3].disabled = true
+
+			const data = {
+				userName: formElement[0].value,
+				email: formElement[1].value,
+				password: formElement[2].value
+			}
+			register(data, formElement)
+
+		})
+
+		async function register(data, formElement) {
+			// Default options are marked with *
+			const response = await fetch(`${url}/register`, {
+				method: 'POST', // *GET, POST, PUT, DELETE, etc.
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data) // body data type must match "Content-Type" header
+			});
+			// return
+			const responseJson = await response.json(); // parses JSON response into native JavaScript objects
+			console.log(responseJson);
+			if (responseJson.ok !== true) {
+
+				message[1].innerHTML = ` <div class='alert alert-danger text-center'>${responseJson.error
+					}</div >`
+				formElement[3].innerHTML = 'Register'
+				formElement[3].disabled = false
+				return
+			}
+			message[1].innerHTML = ` <div class='alert alert-success text-center'>Registration completed</div >`
+
+			// localStorage.setItem('taskToken', responseJson.token)
+			location.replace('/')
+
+		}
+	</script>
+	<!-- <script src="/assets/js/main.js"></script> -->
+</body>
+
+</html>

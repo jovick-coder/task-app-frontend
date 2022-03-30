@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="./assets/css/fontawesome-all.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/auth.js"></script>
+  <title>Dashboard</title>
+</head>
+
+<body>
+  <nav class="d-flex justify-content-between bg-primary text-white">
+    <div class="my-auto px-2 uName"></div>
+    <div class="d-flex"><button class="btn btn-danger logout" onclick="logout()">Logout</button></div>
+  </nav>
+  <div class="d-flex align-items-start nav-div">
+    <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <!-- Task form btn-->
+      <button class="nav-link active text-start" id="v-pills-Form-tab" data-bs-toggle="pill"
+        data-bs-target="#v-pills-Form" type="button" role="tab" aria-controls="v-pills-Form" aria-selected="true">
+        Form
+      </button>
+      <!-- Task listing btn-->
+      <button class="nav-link d-inline-flex justify-content-between" id="v-pills-task-tab" data-bs-toggle="pill"
+        data-bs-target="#v-pills-task" type="button" role="tab" aria-controls="v-pills-task" aria-selected="false">
+        Tasks <span class="badge bg-secondary my-auto task-count"></span>
+      </button>
+      <!-- done task btn -->
+      <!-- <button class="nav-link" id="v-pills-done-task-tab" data-bs-toggle="pill" data-bs-target="#v-pills-done-task"
+        type="button" role="tab" aria-controls="v-pills-done-task" aria-selected="false">
+        Done Task
+      </button> -->
+      <!-- Reminder btn -->
+      <button class="nav-link d-inline-flex justify-content-between" id="v-pills-reminder-tab" data-bs-toggle="pill"
+        data-bs-target="#v-pills-reminder" type="button" role="tab" aria-controls="v-pills-reminder"
+        aria-selected="false">
+        Reminder <span class="badge bg-secondary my-auto reminder-count"></span>
+      </button>
+    </div>
+
+    <!-- task form main div -->
+    <div class="tab-content" id="v-pills-tabContent">
+      <div class="tab-pane fade show active" id="v-pills-Form" role="tabpanel" aria-labelledby="v-pills-Form-tab">
+        <!-- Task form -->
+        <form id="task-form">
+          <div class="message"></div>
+          <div class="mb-3">
+            <label for="task" class="form-label">Task</label>
+            <input type="text" class="form-control" id="task" aria-describedby="emailHelp">
+            <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+          </div>
+          <div class="mb-3">
+            <label for="description">description</label>
+            <textarea name="" class="form-control" id="description" cols="5" rows="3"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="end-date" class="form-label">End Data</label>
+            <input type="datetime-local" class="form-control" id="end-date">
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="reminder">
+            <label class="form-check-label" for="reminder">Set reminder</label>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </form>
+        <!-- task form end -->
+      </div>
+      <!-- task tab -->
+      <div class="tab-pane fade" id="v-pills-task" role="tabpanel" aria-labelledby="v-pills-task-tab">
+        <div class="task-div">
+          <ul id="task-list">
+
+          </ul>
+        </div>
+      </div>
+      <!-- task tab end -->
+      <!-- <div class="tab-pane fade" id="v-pills-done-task" role="tabpanel" aria-labelledby="v-pills-done-task-tab">
+        ...
+      </div> -->
+      <div class="tab-pane fade" id="v-pills-reminder" role="tabpanel" aria-labelledby="v-pills-reminder-tab">
+        <ul id="reminder-list">
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/main.js"></script>
+</body>
+
+</html>
