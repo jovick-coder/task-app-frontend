@@ -1,5 +1,6 @@
 // variables
-const url = "http://localhost:3000/api/task";
+// const url = "http://localhost:3000/api/task";
+const url = "https://jovick-coder-task-api.herokuapp.com/api/task";
 const taskForm = document.querySelector("#task-form");
 const message = document.querySelector(".message");
 const taskList = document.querySelector("#task-list");
